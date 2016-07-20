@@ -36,31 +36,31 @@
 		echo "Example: addsite foobar.org"
 		exit
 	else
-	if [ ! -d /home/www/ ]; then
-        echo " == Creating www in /home/"
-        mkdir /home/www/
-		chmod 0700 /home/www/
-        chown -R www-data:www-data /home/www/
+	if [ ! -d /var/www/ ]; then
+        echo " == Creating www in /var/"
+        mkdir /var/www/
+		chmod 0700 /var/www/
+        chown -R www-data:www-data /var/www/
 	fi
-	if [ ! -d /home/www/htdocs/ ]; then
-        echo " == Creating htdocs in /home/www/"
-        mkdir /home/www/htdocs/
-        chown -R www-data:www-data /home/www/htdocs/
+	if [ ! -d /var/www/htdocs/ ]; then
+        echo " == Creating htdocs in /var/www/"
+        mkdir /var/www/htdocs/
+        chown -R www-data:www-data /var/www/htdocs/
 	fi
-	if [ ! -d /home/www/cgi-bin/ ]; then
-        echo " == Creating cgi-bin in /home/www/"
-        mkdir /home/www/cgi-bin/
-        chown -R www-data:www-data /home/www/cgi-bin/
+	if [ ! -d /var/www/cgi-bin/ ]; then
+        echo " == Creating cgi-bin in /var/www/"
+        mkdir /var/www/cgi-bin/
+        chown -R www-data:www-data /var/www/cgi-bin/
 	fi
-	if [ ! -d /home/www/logs/ ]; then
-        echo " == Creating logs in /home/www/"
-        mkdir /home/www/logs/
-        chown -R www-data:www-data /home/www/logs/
+	if [ ! -d /var/www/logs/ ]; then
+        echo " == Creating logs in /var/www/"
+        mkdir /var/www/logs/
+        chown -R www-data:www-data /var/www/logs/
 	fi
-mkdir /home/www/htdocs/$1 /home/www/logs/$1 /home/www/cgi-bin/$1
-chown -R www-data:www-data /home/www/htdocs/$1
-chown -R www-data:www-data /home/www/logs/$1
-chown -R www-data:www-data /home/www/cgi-bin/$1
+mkdir /var/www/htdocs/$1 /var/www/logs/$1 /var/www/cgi-bin/$1
+chown -R www-data:www-data /var/www/htdocs/$1
+chown -R www-data:www-data /var/www/logs/$1
+chown -R www-data:www-data /var/cgi-bin/$1
 if [ -n "$2" ]; then
 alias="ServerAlias $2"
 fi
@@ -70,17 +70,17 @@ echo "<VirtualHost *:80>
        $alias
        # Indexes + Directory Root.
        DirectoryIndex index.html index.php
-       DocumentRoot /home/www/htdocs/$1/
+       DocumentRoot /var/www/htdocs/$1/
 
        # CGI Directory
-       ScriptAlias /cgi-bin/ /home/www/cgi-bin/$1/
+       ScriptAlias /cgi-bin/ /var/www/cgi-bin/$1/
        <Location /cgi-bin>
                Options +ExecCGI
        </Location>
 
        # Logfiles
-       ErrorLog  /home/www/logs/$1/error.log
-       CustomLog /home/www/logs/$1/access.log combined
+       ErrorLog  /var/www/logs/$1/error.log
+       CustomLog /var/www/logs/$1/access.log combined
 </VirtualHost>" > /etc/apache2/sites-available/$1.conf
 a2ensite $1 >/dev/null 2>&1 &
 /etc/init.d/apache2 reload >/dev/null 2>&1 &
