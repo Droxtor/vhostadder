@@ -60,7 +60,7 @@
 mkdir /var/www/htdocs/$1 /var/www/logs/$1 /var/www/cgi-bin/$1
 chown -R www-data:www-data /var/www/htdocs/$1
 chown -R www-data:www-data /var/www/logs/$1
-chown -R www-data:www-data /var/cgi-bin/$1
+chown -R www-data:www-data /var/www/cgi-bin/$1
 if [ -n "$2" ]; then
 alias="ServerAlias $2"
 fi
